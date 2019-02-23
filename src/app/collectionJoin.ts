@@ -1,5 +1,4 @@
 import { AngularFirestore } from 'angularfire2/firestore'; // from 'angularfire2/firestore';
-
 import { combineLatest, of, defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 

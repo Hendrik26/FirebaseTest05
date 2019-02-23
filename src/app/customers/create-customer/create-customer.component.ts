@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {Customer} from '../customer';
 import {CustomerService} from '../customer.service';
+import {Car} from '../car';
+import {CustomerNew} from '../customer_new';
 
 
 @Component({
@@ -12,8 +14,8 @@ import {CustomerService} from '../customer.service';
 })
 export class CreateCustomerComponent implements OnInit {
 
-    customer: Customer = new Customer();
-    //customers: any;
+    customer: CustomerNew = new CustomerNew();
+    cars: Car[];
     customerId: string;
     submitted = false;
     receivedCustomerIdError = true;
@@ -24,6 +26,8 @@ export class CreateCustomerComponent implements OnInit {
         private location: Location,
         private customerService: CustomerService
     ) {
+        this.getCarsList();
+        console.log(this.cars);
     }
 
 
@@ -33,7 +37,7 @@ export class CreateCustomerComponent implements OnInit {
         console.log('------------');
 
         if (this.receivedCustomerIdError) {
-            this.customer = new Customer();
+            this.customer = new CustomerNew();
             this.customer.active = true;
         } else {
             console.log('ngOnInit else');
@@ -43,19 +47,19 @@ export class CreateCustomerComponent implements OnInit {
 
     }
 
+    private getCarsList() {
+        this.customerService.getCarsList()
+            .subscribe(data  => {this.cars = data; });
+    }
+
     private hasReceivedCustomerId(): // can NOT be deleted
         boolean {
         console.log('private method hasReceivedCustomerId()');
         if (this.route.snapshot.paramMap.has('customerId')) {
             this.customerId = this.route.snapshot.paramMap.get('customerId');  // get customerId from URL
-            console.log('if-Zweig');
-            console.log('this.customerId===' + this.customerId);
-            console.log('--------------');
             return true;
         } else {
             this.customerId = null; // stands for the creation of a new customer
-            console.log('else-Zweig');
-            console.log('--------------');
             return false;
         }
     }
@@ -63,7 +67,7 @@ export class CreateCustomerComponent implements OnInit {
 
     newCustomer(): void {
         this.submitted = false;
-        this.customer = new Customer();
+        this.customer = new CustomerNew();
         this.customer.active = true;
     }
 
@@ -79,7 +83,7 @@ export class CreateCustomerComponent implements OnInit {
         console.log(this.customer);
         if (this.receivedCustomerIdError) {
             this.customerService.createCustomer(this.customer);
-            this.customer = new Customer();
+            this.customer = new CustomerNew();
         } else {
             if (this.customer !== undefined) {
                 this.updateCustomer();
@@ -90,6 +94,7 @@ export class CreateCustomerComponent implements OnInit {
 
 
     updateCustomer() {
+        console.log('Update')
         console.log(this.customer);
         this.customerService.updateCustomer(this.customerId, this.customer);
     }

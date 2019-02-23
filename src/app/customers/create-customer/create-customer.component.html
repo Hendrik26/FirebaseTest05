@@ -10,6 +10,11 @@
       <label for="age">Age</label>
       <input type="number" class="form-control" id="age" required [(ngModel)]="customer.age" name="age">
     </div>
+    <div>Car<br>
+      <select [(ngModel)]="customer.car_id">
+        <option *ngFor="let car of cars" value={{car.key}}>{{car.type}}</option>
+      </select>
+    </div>
 
     <!--div>
         CustomerId:

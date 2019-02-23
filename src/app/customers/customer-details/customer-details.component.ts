@@ -1,6 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Customer} from '../customer';
+import {Car} from '../car';
 import {CustomerService} from '../customer.service';
 import {Location} from '@angular/common';
 

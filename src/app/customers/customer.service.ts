@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
-import {Customer} from './customer';
+import {CustomerNew} from './customer_new';
 import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import {shareReplay} from 'rxjs/operators';
 import {leftJoinDocument} from '../collectionJoin';
 
@@ -11,24 +12,44 @@ import {leftJoinDocument} from '../collectionJoin';
 export class CustomerService {
 
     private dbPath = '/customers';
+    private dbPathCars = '/cars';
 
     constructor(private db: AngularFirestore) {
+    }
+
+    getCarsList(): Observable<any> {
+        return this.db.collection(this.dbPathCars)
+            .snapshotChanges()
+            .pipe(
+                map(actions => actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const key = a.payload.doc.id;
+                    return {key, ...data};
+                })));
     }
 
     getJoinedCustomersList(sortDirStr, dbMinage, dbMaxage): Observable<any> {
         return this.db.collection(this.dbPath,
             ref => ref.orderBy('age', sortDirStr).where('age', '>=', dbMinage).where('age', '<=', dbMaxage))
-            .valueChanges().pipe(
+            .snapshotChanges()
+            .pipe(
+                map(actions => actions.map(a => {
+                    const data = a.payload.doc.data();
+                    const key = a.payload.doc.id;
+                    return {key, ...data};
+                })))
+            .pipe(
                 leftJoinDocument(this.db, 'car', 'cars'),
                 shareReplay(1)
             );
     }
 
-    createCustomer(customer: Customer): void {
+    createCustomer(customer: CustomerNew): void {
         this.db.collection(this.dbPath).add({
             'active': customer.active,
             'age': customer.age,
-            'name': customer.name
+            'name': customer.name,
+            'car_id': customer.car_id
         }).catch(error => this.handleError(error));
     }
 
@@ -48,11 +69,12 @@ export class CustomerService {
         }).catch(error => this.handleError(error));
     }
 
-    updateCustomer(id: string, customer: Customer): void {
+    updateCustomer(id: string, customer: CustomerNew): void {
         this.db.doc(`${this.dbPath}/${id}`).update({
             'active': customer.active,
             'age': customer.age,
-            'name': customer.name
+            'name': customer.name,
+            'car_id': customer.car_id
         }).catch(error => this.handleError(error));
     }
 
