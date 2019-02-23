@@ -49,7 +49,7 @@ export class CustomerService {
             'active': customer.active,
             'age': customer.age,
             'name': customer.name,
-            'car_id': customer.car_id
+            'car': customer.car
         }).catch(error => this.handleError(error));
     }
 
@@ -74,7 +74,7 @@ export class CustomerService {
             'active': customer.active,
             'age': customer.age,
             'name': customer.name,
-            'car_id': customer.car_id
+            'car': customer.car
         }).catch(error => this.handleError(error));
     }
 

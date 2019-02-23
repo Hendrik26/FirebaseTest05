@@ -27,7 +27,6 @@ export class CreateCustomerComponent implements OnInit {
         private customerService: CustomerService
     ) {
         this.getCarsList();
-        console.log(this.cars);
     }
 
 
@@ -49,7 +48,9 @@ export class CreateCustomerComponent implements OnInit {
 
     private getCarsList() {
         this.customerService.getCarsList()
-            .subscribe(data  => {this.cars = data; });
+            .subscribe(data  => {
+                this.cars = data;
+            });
     }
 
     private hasReceivedCustomerId(): // can NOT be deleted

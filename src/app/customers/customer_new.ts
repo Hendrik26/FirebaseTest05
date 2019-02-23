@@ -5,5 +5,5 @@ export class CustomerNew {
     name: string;
     age: number;
     active = true;
-    car_id: string;
+    car: string;
 }
