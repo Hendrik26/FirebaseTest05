@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
 import {Customer} from '../customer';
 import {CustomerService} from '../customer.service';
 
@@ -15,7 +14,6 @@ export class CustomersListComponent implements OnInit {
     sortDir = '1';
     minage = 0;
     maxage = 100000;
-    xcustomers: Customer[];
 
     public static compareCustomerByName(customer1: Customer, customer2: Customer): number {
         if (customer1.name.trim().toLowerCase() < customer2.name.trim().toLowerCase()) {
@@ -28,7 +26,6 @@ export class CustomersListComponent implements OnInit {
     }
 
     ngOnInit() {
-        //this.getCustomersList('asc', this.minage, this.maxage);
         this.getJoinedCustomersList('asc', this.minage, this.maxage);
     }
 
@@ -40,20 +37,7 @@ export class CustomersListComponent implements OnInit {
         }
     }
 
-    getCustomersList(sortDirStr, minage, maxage) {
-        // Use snapshotChanges().map() to store the key ////
-        this.customerService.getCustomersList(sortDirStr, minage, maxage).subscribe(customers => {
-            this.customers = customers;
-            if (this.sortOrder === 'name') {
-                const sortDirNum = Number(this.sortDir);
-                this.customers.sort(function (a, b) {
-                    return sortDirNum *  CustomersListComponent.compareCustomerByName(a, b);
-                });
-            }
-        });
-    }
-
-    getJoinedCustomersList(sortDirStr, minage, maxage) {
+        getJoinedCustomersList(sortDirStr, minage, maxage) {
         // Use snapshotChanges().map() to store the key ////
         this.customerService.getJoinedCustomersList(sortDirStr, minage, maxage)
             .subscribe(joins => {
