@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {Customer} from './customer';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
@@ -13,6 +13,7 @@ import { docJoin } from '../docJoin';
 export class CustomerService {
 
     private dbPath = '/customers';
+    x;
 
     // customersRef: AngularFirestoreCollection<Customer> = null;
 
@@ -30,11 +31,10 @@ export class CustomerService {
     }
 
     getJoinedCustomersList(sortDirStr, dbMinage, dbMaxage): Observable<any> {
-        console.log(sortDirStr);
         return this.db.collection(this.dbPath,
             ref => ref.orderBy('age', sortDirStr).where('age', '>=', dbMinage).where('age', '<=', dbMaxage))
-            .snapshotChanges().pipe(
-                leftJoinDocument(this.db, 'cars', 'cars'),
+            .valueChanges().pipe(
+                leftJoinDocument(this.db, 'car', 'cars'),
                 shareReplay(1)
             );
     }

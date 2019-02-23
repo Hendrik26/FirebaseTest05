@@ -15,7 +15,7 @@ export class CustomersListComponent implements OnInit {
     sortDir = '1';
     minage = 0;
     maxage = 100000;
-    x;
+    xcustomers: Customer[];
 
     public static compareCustomerByName(customer1: Customer, customer2: Customer): number {
         if (customer1.name.trim().toLowerCase() < customer2.name.trim().toLowerCase()) {
@@ -34,9 +34,9 @@ export class CustomersListComponent implements OnInit {
 
     orderChange() {
         if (this.sortDir === '1') {
-            this.getCustomersList('asc', this.minage, this.maxage);
+            this.getJoinedCustomersList('asc', this.minage, this.maxage);
         } else {
-            this.getCustomersList('desc', this.minage, this.maxage);
+            this.getJoinedCustomersList('desc', this.minage, this.maxage);
         }
     }
 
@@ -55,18 +55,15 @@ export class CustomersListComponent implements OnInit {
 
     getJoinedCustomersList(sortDirStr, minage, maxage) {
         // Use snapshotChanges().map() to store the key ////
-        this.customerService.getJoinedCustomersList(sortDirStr, minage, maxage).subscribe(customers => {
-            this.customers = customers;
-
-            console.log('XXX');
-            console.log(this.customers[0]);
-            /*
-            if (this.sortOrder === 'name') {
-                const sortDirNum = Number(this.sortDir);
-                this.customers.sort(function (a, b) {
-                    return sortDirNum *  CustomersListComponent.compareCustomerByName(a, b);
-                });
-            } */
+        this.customerService.getJoinedCustomersList(sortDirStr, minage, maxage)
+            .subscribe(joins => {
+            this.customers = joins;
+                if (this.sortOrder === 'name') {
+                    const sortDirNum = Number(this.sortDir);
+                    this.customers.sort(function (a, b) {
+                        return sortDirNum *  CustomersListComponent.compareCustomerByName(a, b);
+                    });
+                }
         });
     }
 

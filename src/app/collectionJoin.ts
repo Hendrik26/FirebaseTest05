@@ -1,4 +1,4 @@
-import { AngularFirestore } from '@angular/fire/firestore'; // from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore'; // from 'angularfire2/firestore';
 
 import { combineLatest, pipe, of, defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';

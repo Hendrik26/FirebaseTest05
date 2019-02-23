@@ -2,9 +2,6 @@
     <div>
         <div class="flex-container">
             <div>
-                <label>Key: </label> {{customer.key}}
-            </div>
-            <div>
                 <label>Name: </label> {{customer.name}}
             </div>
             <div>
@@ -12,6 +9,18 @@
             </div>
             <div>
                 <label>Active: </label> {{customer.active}}
+            </div>
+
+        </div>
+        <div *ngIf= "customer.car" class="flex-container">
+            <div>
+                <label> car type: </label> {{customer.car.type}}
+            </div>
+            <div>
+                <label> car color: </label> {{customer.car.color}}
+            </div>
+            <div>
+                <label> car horsepower: </label> {{customer.car.horsepower}}
             </div>
         </div>
     </div>
