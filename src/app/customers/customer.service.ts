@@ -1,3 +1,5 @@
+// use Cloud Firestore
+
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {CustomerNew} from './customer_new';
